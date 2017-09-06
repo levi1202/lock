@@ -102,6 +102,7 @@
     "react": "^15.6.1 || ^16.0.0",
     "react-dom": "^15.6.1 || ^16.0.0",
     "react-transition-group": "^1.2.0",
+    "store": "2.0.12",
     "superagent": "^3.3.1",
     "trim": "0.0.1",
     "url-join": "^1.1.0"

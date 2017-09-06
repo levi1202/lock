@@ -2,6 +2,8 @@ import auth0 from 'auth0-js';
 import Auth0LegacyAPIClient from './web_api/legacy_api';
 import Auth0APIClient from './web_api/p2_api';
 
+import * as loginHistory from './login-history';
+
 class Auth0WebAPI {
   constructor() {
     this.clients = {};
@@ -9,6 +11,7 @@ class Auth0WebAPI {
 
   setupClient(lockID, clientID, domain, opts) {
     const hostedLoginPage = window.location.host === domain;
+    this.rememberLastLogin = opts.rememberLastLogin;
     // when it is used on on the hosted login page, it shouldn't use popup mode
     opts.redirect = hostedLoginPage ? true : opts.redirect;
 
@@ -31,6 +34,10 @@ class Auth0WebAPI {
   }
 
   logIn(lockID, options, authParams, cb) {
+    if (this.rememberLastLogin) {
+      const username = options.username || options.email || options.login_hint;
+      loginHistory.setLastLogin(options.connection, username);
+    }
     this.clients[lockID].logIn(options, authParams, cb);
   }
 

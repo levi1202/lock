@@ -41,6 +41,7 @@ import LastLoginScreen from '../core/sso/last_login_screen';
 import { hasError, isDone, isSuccess } from '../sync';
 import { getFieldValue } from '../field/index';
 import { swap, updateEntity } from '../store/index';
+import * as loginHistory from '../core/login-history';
 
 export function isSSOEnabled(m) {
   return matchesEnterpriseConnection(m, databaseUsernameValue(m));
@@ -172,11 +173,9 @@ class Classic {
         }
 
         if (l.ui.rememberLastLogin(m)) {
-          const conn = lastUsedConnection(m);
-          if (conn && isSuccess(m, 'sso')) {
-            if (l.hasConnection(m, conn.get('name'))) {
-              return new LastLoginScreen();
-            }
+          const lastLogin = loginHistory.getLastLogin();
+          if (lastLogin && lastLogin.connection && l.hasConnection(m, lastLogin.connection)) {
+            return new LastLoginScreen();
           }
         }
       }

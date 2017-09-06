@@ -28,7 +28,8 @@ export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn
     domain,
     l.withAuthOptions(m, {
       ...options,
-      popupOptions: l.ui.popupOptions(m)
+      popupOptions: l.ui.popupOptions(m),
+      rememberLastLogin: l.ui.rememberLastLogin(m)
     })
   );
 

@@ -7,6 +7,7 @@ import * as l from '../index';
 import { renderSignedInConfirmation } from '../signed_in_confirmation';
 import { STRATEGIES as SOCIAL_STRATEGIES } from '../../connection/social/index';
 import { authButtonsTheme } from '../../connection/social/index';
+import * as loginHistory from '../login-history';
 
 // TODO: handle this from CSS
 function icon(strategy) {
@@ -17,27 +18,28 @@ function icon(strategy) {
 }
 
 const Component = ({ i18n, model }) => {
+  const lastLogin = loginHistory.getLastLogin();
+  const lastUsedConnection = l.findConnection(model, lastLogin.connection);
   const headerText = i18n.html('lastLoginInstructions') || null;
   const header = headerText && <p>{headerText}</p>;
   const theme = authButtonsTheme(model);
-  const connectionName = lastUsedConnection(model).get('name');
-  const buttonTheme = theme.get(connectionName);
+  const buttonTheme = theme.get(lastLogin.connection);
   const primaryColor = buttonTheme && buttonTheme.get('primaryColor');
   const foregroundColor = buttonTheme && buttonTheme.get('foregroundColor');
   const buttonIcon = buttonTheme && buttonTheme.get('icon');
 
   const buttonClickHandler = () => {
-    logIn(l.id(model), lastUsedConnection(model), lastUsedUsername(model));
+    logIn(l.id(model), lastUsedConnection, lastLogin.username);
   };
 
   return (
     <QuickAuthPane
       alternativeLabel={i18n.str('notYourAccountAction')}
       alternativeClickHandler={() => skipQuickAuth(l.id(model))}
-      buttonLabel={lastUsedUsername(model)}
+      buttonLabel={lastLogin.username}
       buttonClickHandler={buttonClickHandler}
       header={header}
-      strategy={icon(lastUsedConnection(model).get('strategy'))}
+      strategy={icon(lastUsedConnection.get('strategy'))}
       buttonIcon={buttonIcon}
       primaryColor={primaryColor}
       foregroundColor={foregroundColor}
