@@ -41,8 +41,8 @@ class SubmitButton extends React.Component {
         <span dangerouslySetInnerHTML={{ __html: submitText }} />
       </span>
     ) : (
-      <span dangerouslySetInnerHTML={{ __html: submitSvg }} />
-    );
+        <span dangerouslySetInnerHTML={{ __html: submitSvg }} />
+      );
 
     return (
       <button
@@ -50,13 +50,13 @@ class SubmitButton extends React.Component {
         disabled={disabled}
         style={{ backgroundColor: color }}
         onClick={::this.handleSubmit}
-        type="submit"
-      >
-        <div className="auth0-loading-container">
-          <div className="auth0-loading" />
-        </div>
-        {content}
-      </button>
+  type = "submit"
+  >
+  <div className="auth0-loading-container">
+    <div className="auth0-loading" />
+  </div>
+        {content }
+      </button >
     );
   }
 }
@@ -164,7 +164,8 @@ export default class Chrome extends React.Component {
   }
 
   findAutofocusInput(ref) {
-    return ReactDOM.findDOMNode(ref || this.refs.screen).querySelector('input');
+    const domNode = ReactDOM.findDOMNode(ref || this.refs.screen);
+    return domNode ? domNode.querySelector('input') : null;
   }
 
   focusError() {
@@ -259,8 +260,8 @@ export default class Chrome extends React.Component {
           name={name}
           backHandler={backHandler && ::this.handleBack}
           backgroundUrl={backgroundUrl}
-          backgroundColor={primaryColor}
-          logoUrl={logo}
+        backgroundColor={primaryColor}
+        logoUrl={logo}
         />
         <TransitionGroup>
           <CSSTransition classNames="global-message" timeout={MESSAGE_ANIMATION_DURATION}>
@@ -277,35 +278,37 @@ export default class Chrome extends React.Component {
             onDidSlide={::this.onDidSlide}
             onWillSlide={::this.onWillSlide}
             transitionName={classNames}
-            reverse={reverse}
+          reverse={reverse}
           >
             <div key={this.mainScreenName()} className="auth0-lock-view-content">
-              <div style={{ position: 'relative' }}>
-                <div className="auth0-lock-body-content">
-                  <div className="auth0-lock-content">
-                    <div className="auth0-lock-form">
-                      <Content focusSubmit={::this.focusSubmit} {...contentProps} />
+            <div style={{ position: 'relative' }}>
+              <div className="auth0-lock-body-content">
+                <div className="auth0-lock-content">
+                  <div className="auth0-lock-form">
+                    <Content focusSubmit={::this.focusSubmit} {...contentProps} />
                     </div>
-                  </div>
-                  {terms && <small className="auth0-lock-terms">{terms}</small>}
                 </div>
+                {terms && <small className="auth0-lock-terms">{terms}</small>}
               </div>
             </div>
+          </div>
           </MultisizeSlide>
-        </div>
-        {submitButton}
-        {auxiliaryPane && (
-          <TransitionGroup>
-            <CSSTransition
-              ref="auxiliary"
-              classNames="slide"
-              timeout={AUXILIARY_ANIMATION_DURATION}
-            >
-              {auxiliaryPane}
-            </CSSTransition>
-          </TransitionGroup>
-        )}
       </div>
+        {submitButton }
+    {
+      auxiliaryPane && (
+        <TransitionGroup>
+          <CSSTransition
+            ref="auxiliary"
+            classNames="slide"
+            timeout={AUXILIARY_ANIMATION_DURATION}
+          >
+            {auxiliaryPane}
+          </CSSTransition>
+        </TransitionGroup>
+      )
+    }
+      </div >
     );
   }
 
